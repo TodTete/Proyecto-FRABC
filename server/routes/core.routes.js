@@ -1,7 +1,10 @@
 import { Router } from "express";
+import { getCoreData } from "../controllers/core.controller.js";
 import { pool } from "../db.js";
 
 const router = Router();
+
+router.get("/coredata", getCoreData); // ✅
 
 router.get("/ping", async (req, res) => {
     try {
