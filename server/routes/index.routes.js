@@ -7,7 +7,7 @@ import {
     getUsers,
     updateUser,
     createUser,
-    login 
+    loginUser 
 } from "../controllers/core.controllers.js";
 
 const router = Router();
@@ -16,7 +16,7 @@ const router = Router();
 router.use(rateLimit);
 
 // Ruta de inicio de sesión
-router.post("/login", login);
+router.post("/login", loginUser);
 
 // Rutas de usuarios
 router.get("/users", getUsers);
