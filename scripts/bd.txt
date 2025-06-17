@@ -1,0 +1,31 @@
+CREATE TABLE usuarios (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  correo VARCHAR(255) UNIQUE NOT NULL,
+  contraseña_hash VARCHAR(255) NOT NULL,  -- ¡Ahora es seguro!
+  rol ENUM('admin', 'usuario') NOT NULL DEFAULT 'usuario',
+  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE areas (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE memorandos (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  folio VARCHAR(50) UNIQUE NOT NULL,       -- Identificador único
+  remitente_id BIGINT NOT NULL,            -- Usuario que envía (relación directa)
+  area_id BIGINT NOT NULL,                 -- Área de origen
+  destinatario_id BIGINT,                  -- Usuario destinatario (opcional)
+  contenido TEXT NOT NULL,                 -- Texto completo del memorando
+  documento_blob LONGBLOB,                 -- PDF/Word adjunto (opcional)
+  urgencia ENUM('urgente', 'ordinario') DEFAULT 'ordinario',
+  estado ENUM('en_proceso', 'revisado', 'entregado') DEFAULT 'pendiente',
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_limite DATE,                       -- Fecha límite para respuesta
+  FOREIGN KEY (remitente_id) REFERENCES usuarios(id),
+  FOREIGN KEY (area_id) REFERENCES areas(id),
+  FOREIGN KEY (destinatario_id) REFERENCES usuarios(id)
+);
